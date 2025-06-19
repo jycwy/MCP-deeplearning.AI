@@ -1,0 +1,7 @@
+secrets*
+papers/*
+.venv/*
+.DS_Store
+.python-version
+.env
+*pycache*
