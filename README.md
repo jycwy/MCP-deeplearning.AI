@@ -1,6 +1,6 @@
-
 Overview of the MCP Server Architecture:
 ![img1](imgs/img1.png)
+![img1](imgs/mcp_overview.png)
 
 
 # MCP server: research_server*.py
@@ -35,3 +35,18 @@ Updated MCP chatbot
 - Resources
 Resources are similar to GET endpoints in a REST API - they provide data but shouldn't perform significant computation or have side effects.
 - Prompt Template
+
+
+# how to run/debug in local
+```bash
+uv run mcp_chatbot*.py
+```
+
+sample prompt:
+```
+Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts/architecture and save the content in the file "mcp_summary.md", create a visual diagram that summarizes the content of "mcp_summary.md" and save it in a text file
+```
+```@folders```
+```@ai_interpretability```
+```prompts```
+```prompt generate_search_prompt topic=history num_papers=2```
