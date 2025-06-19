@@ -1,6 +1,11 @@
 Overview of the MCP Server Architecture:
 ![img1](imgs/img1.png)
 ![img1](imgs/mcp_overview.png)
+![img1](imgs/client_server_architecture.png)
+
+MCP Transports:
+![img1](imgs/MCP_transports.png)
+![img1](imgs/Remote_server_transports.png)
 
 
 # MCP server: research_server*.py
@@ -50,3 +55,63 @@ Fetch the content of this website: https://modelcontextprotocol.io/docs/concepts
 ```@ai_interpretability```
 ```prompts```
 ```prompt generate_search_prompt topic=history num_papers=2```
+
+# Creating and Deploying Remote Servers
+1. SSE
+
+You just need to specify that the transport is sse when running the server. You can also specify the port number when initializing the FastMCP server. 
+
+```python
+# Initialize FastMCP server
+mcp = FastMCP("research", port=8001)
+```
+
+```python
+if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run(transport='sse')
+```
+
+2. Streamable HTTP
+
+```python
+if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run(transport="streamable-http")
+```
+
+two options when initiate the FastMCP
+```python
+# Stateful server (maintains session state)
+mcp = FastMCP("research")
+
+# Stateless server (no session persistence)
+mcp = FastMCP("research", stateless_http=True)
+```
+
+**Stateless** can be used when you want the server to handle simple, independent requests (no memory of previous interactions with the same client). **Stateful** can be used when you want the server to handle multiple requests that are part of a workflow and you want the server to remember the Client information and context across multiple requests.
+
+## how to test and debug the remote server
+1. using Inspector UI
+2. update MCP chatbot code to connect to a remote server
+```python
+from mcp.client.sse import sse_client
+
+sse_transport = await self.exit_stack.enter_async_context(
+                   sse_client(url= "server_url/sse" )
+                )
+read, write = sse_transport 
+```
+
+or
+
+``` python
+from mcp.client.streamable_http import streamablehttp_client
+streamable_transport = await self.exit_stack.enter_async_context(
+                   streamablehttp_client(url= "server_url/mcp/" )
+                )
+read, write = streamable_transport 
+```
+
+## how to deploy
+- render
